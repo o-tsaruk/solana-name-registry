@@ -1,0 +1,16 @@
+# Anchor build artifacts and config
+.anchor/
+target/
+
+# OS files
+.DS_Store
+
+# Backup files
+**/*.rs.bk
+
+# Node.js dependencies
+node_modules/
+.yarn/
+
+# Local test validator ledger data
+test-ledger/

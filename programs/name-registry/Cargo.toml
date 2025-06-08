@@ -1,0 +1,22 @@
+[package]
+name = "name-registry"
+version = "0.1.0"
+description = "Solana program for decentralized human-readable name registry with metadata."
+edition = "2021"
+
+[lib]
+crate-type = ["cdylib", "lib"]
+name = "name_registry"
+
+[features]
+default = []
+cpi = ["no-entrypoint"]
+no-entrypoint = []
+no-idl = []
+no-log-ix-name = []
+idl-build = ["anchor-lang/idl-build"]
+
+
+[dependencies]
+anchor-lang = "0.31.1"
+
