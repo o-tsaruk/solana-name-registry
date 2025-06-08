@@ -1,7 +1,7 @@
 use anchor_lang::prelude::*;
 
 pub fn transfer_name(ctx: Context<TransferName>) -> Result<()> {
-     Ok(())
+    Ok(())
 }
 
 #[derive(Accounts)]

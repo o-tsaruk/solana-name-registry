@@ -1,7 +1,7 @@
 use anchor_lang::prelude::*;
 
 pub fn reserve_name(ctx: Context<ReserveName>) -> Result<()> {
-     Ok(())
+    Ok(())
 }
 
 #[derive(Accounts)]
