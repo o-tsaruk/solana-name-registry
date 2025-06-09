@@ -1,8 +1,7 @@
 {
   "license": "ISC",
   "scripts": {
-    "lint:fix": "prettier */*.js \"*/**/*{.js,.ts}\" -w",
-    "lint": "prettier */*.js \"*/**/*{.js,.ts}\" --check"
+    "fmt": "prettier */*.js \"*/**/*{.js,.ts}\" --write"
   },
   "dependencies": {
     "@coral-xyz/anchor": "^0.31.1"
