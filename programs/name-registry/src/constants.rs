@@ -1,6 +1,7 @@
-const NAME_LEN: usize = 20;
-const LINK_LEN: usize = 160;
-const BIO_LEN: usize = 160;
-const TITLE_LEN: usize = 80;
+pub const REGISTRATION_LAMPORT_FEE: u64 = 100_000;
+pub const MAX_NAME_LEN: usize = 20;
 
-pub const REGISTRATION_FEE_LAMPORTS: u64 = 100_000; 
+// Metadata
+pub const MAX_LINK_LEN: usize = 160;
+pub const MAX_BIO_LEN: usize = 160;
+pub const MAX_TITLE_LEN: usize = 80;

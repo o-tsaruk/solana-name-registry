@@ -1,6 +1,6 @@
 use anchor_lang::prelude::*;
 
-pub fn transfer_name(ctx: Context<TransferName>) -> Result<()> {
+pub fn transfer_name(_ctx: Context<TransferName>) -> Result<()> {
     Ok(())
 }
 

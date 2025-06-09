@@ -1,3 +1,4 @@
+use crate::state::Config;
 use anchor_lang::prelude::*;
 
 pub fn initialize(ctx: Context<Initialize>) -> Result<()> {
@@ -5,11 +6,6 @@ pub fn initialize(ctx: Context<Initialize>) -> Result<()> {
     config.admin = *ctx.accounts.user.key;
     msg!("Initialized with id: {:?}", ctx.program_id);
     Ok(())
-}
-
-#[account]
-pub struct Config {
-    pub admin: Pubkey,
 }
 
 #[derive(Accounts)]

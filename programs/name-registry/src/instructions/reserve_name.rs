@@ -1,6 +1,6 @@
 use anchor_lang::prelude::*;
 
-pub fn reserve_name(ctx: Context<ReserveName>) -> Result<()> {
+pub fn reserve_name(_ctx: Context<ReserveName>) -> Result<()> {
     Ok(())
 }
 
