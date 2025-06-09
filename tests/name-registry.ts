@@ -9,15 +9,13 @@ describe("name-registry", () => {
   anchor.setProvider(provider);
 
   const program = anchor.workspace.nameRegistry as Program<NameRegistry>;
-  const user = new Keypair();
-  const payer = provider.wallet as anchor.Wallet;
+  const user = (provider.wallet as anchor.Wallet).payer;
 
   it("Initialization", async () => {
     const tx = await program.methods
       .initialize()
       .accounts({
         user: user.publicKey,
-        payer: payer.publicKey,
       })
       .signers([user])
       .rpc();
