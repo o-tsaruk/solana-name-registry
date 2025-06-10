@@ -1,6 +1,6 @@
 use crate::constants::*;
 use crate::errors::NameRegistryError;
-use crate::state::{Config, Metadata, NameRecord};
+use crate::state::{Config, Metadata, Record, UserRecord};
 use anchor_lang::prelude::*;
 use anchor_lang::system_program::{transfer, Transfer};
 
@@ -9,9 +9,7 @@ pub fn register_name(
     name: String,
     metadata: Option<Metadata>,
 ) -> Result<()> {
-    let record = &mut ctx.accounts.record;
     let user = &ctx.accounts.user;
-
     require!(name.len() <= MAX_NAME_LEN, NameRegistryError::NameTooLong);
 
     transfer(
@@ -25,9 +23,13 @@ pub fn register_name(
         REGISTRATION_LAMPORT_FEE,
     )?;
 
+    let record = &mut ctx.accounts.record;
     record.owner = user.key();
-    record.name = name;
+    record.name = name.clone();
     record.metadata = metadata;
+
+    let user_record = &mut ctx.accounts.user_record;
+    user_record.name = name;
 
     Ok(())
 }
@@ -38,11 +40,20 @@ pub struct RegisterName<'info> {
     #[account(
         init,
         payer = user,
-        space = 8 + NameRecord::MAX_SIZE,
+        space = 8 + Record::MAX_SIZE,
         seeds = [b"record", name.as_bytes()],
         bump
     )]
-    pub record: Account<'info, NameRecord>,
+    pub record: Account<'info, Record>,
+
+    #[account(
+        init,
+        payer = user,
+        space = 8 + 64,
+        seeds = [b"user_record", user.key().as_ref()],
+        bump
+    )]
+    pub user_record: Account<'info, UserRecord>,
 
     #[account(
         seeds = [b"config"],

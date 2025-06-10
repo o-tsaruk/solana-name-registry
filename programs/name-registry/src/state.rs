@@ -16,13 +16,13 @@ pub struct Metadata {
 }
 
 #[account]
-pub struct NameRecord {
+pub struct Record {
     pub owner: Pubkey,
     pub name: String,
     pub metadata: Option<Metadata>,
 }
 
-impl NameRecord {
+impl Record {
     pub const MAX_SIZE: usize = 32   // owner
         + 4 + MAX_NAME_LEN           // name string
         + 1 + (                      // Option<Metadata>
@@ -32,4 +32,9 @@ impl NameRecord {
             1 + 4 + MAX_LINK_LEN +   // github_link
             1 + 4 + MAX_LINK_LEN     // social_link
         );
+}
+
+#[account]
+pub struct UserRecord {
+    pub name: String,
 }

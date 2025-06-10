@@ -1,4 +1,4 @@
-use crate::state::{Metadata, NameRecord};
+use crate::state::{Metadata, Record};
 use anchor_lang::prelude::*;
 
 pub fn update_metadata(
@@ -19,7 +19,7 @@ pub struct UpdateMetadata<'info> {
         seeds = [b"record", name.as_bytes()],
         bump
     )]
-    pub record: Account<'info, NameRecord>,
+    pub record: Account<'info, Record>,
     #[account(mut)]
     pub user: Signer<'info>,
 }
