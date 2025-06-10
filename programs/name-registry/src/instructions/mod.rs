@@ -1,11 +1,9 @@
 pub mod initialize;
 pub mod register_name;
-pub mod reserve_name;
-pub mod set_metadata;
 pub mod transfer_name;
+pub mod update_metadata;
 
 pub use initialize::*;
 pub use register_name::*;
-pub use reserve_name::*;
-pub use set_metadata::*;
 pub use transfer_name::*;
+pub use update_metadata::*;
