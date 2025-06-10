@@ -27,8 +27,8 @@ pub mod name_registry {
         register_name::register_name(ctx, name, metadata)
     }
 
-    pub fn update_metadata(ctx: Context<UpdateMetadata>, metadata: Option<Metadata>) -> Result<()> {
-        update_metadata::update_metadata(ctx, metadata)
+    pub fn update_metadata(ctx: Context<UpdateMetadata>, name: String, metadata: Option<Metadata>) -> Result<()> {
+        update_metadata::update_metadata(ctx, name, metadata)
     }
 
     pub fn transfer_name(ctx: Context<TransferName>) -> Result<()> {

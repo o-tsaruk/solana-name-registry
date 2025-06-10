@@ -33,12 +33,13 @@ pub fn register_name(
 }
 
 #[derive(Accounts)]
+#[instruction(name: String)]
 pub struct RegisterName<'info> {
     #[account(
         init,
         payer = user,
         space = 8 + NameRecord::MAX_SIZE,
-        seeds = [b"record", user.key().as_ref()],
+        seeds = [b"record", name.as_bytes()],
         bump
     )]
     pub record: Account<'info, NameRecord>,

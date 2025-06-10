@@ -29,7 +29,7 @@ describe("name-registry", () => {
       .rpc();
 
     const [recordPda] = anchor.web3.PublicKey.findProgramAddressSync(
-      [Buffer.from("record"), user.publicKey.toBuffer()],
+      [Buffer.from("record"), Buffer.from(name)],
       program.programId
     );
 
@@ -65,7 +65,7 @@ describe("name-registry", () => {
 
   it("Update metadata", async () => {
     const [recordPda] = anchor.web3.PublicKey.findProgramAddressSync(
-      [Buffer.from("record"), user.publicKey.toBuffer()],
+      [Buffer.from("record"), Buffer.from(name)],
       program.programId
     );
 
@@ -77,7 +77,7 @@ describe("name-registry", () => {
     metadata.socialLink = "https://twitter.com/example";
 
     await program.methods
-      .updateMetadata(metadata)
+      .updateMetadata(name, metadata)
       .accounts(accountsForUpdate)
       .signers([user])
       .rpc();
