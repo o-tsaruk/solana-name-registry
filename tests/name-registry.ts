@@ -9,6 +9,7 @@ describe("name-registry", () => {
 
   const program = anchor.workspace.nameRegistry as Program<NameRegistry>;
   const user = (provider.wallet as anchor.Wallet).payer;
+  let recordPda: anchor.web3.PublicKey;
 
   const name = "test.name";
   const metadata = {
@@ -19,6 +20,14 @@ describe("name-registry", () => {
     socialLink: null,
   };
 
+  beforeEach(async () => {
+    const [_recordPda] = anchor.web3.PublicKey.findProgramAddressSync(
+      [Buffer.from("record"), Buffer.from(name)],
+      program.programId
+    );
+    recordPda = _recordPda;
+  });
+
   it("Register name", async () => {
     await program.methods
       .initialize()
@@ -27,11 +36,6 @@ describe("name-registry", () => {
       })
       .signers([user])
       .rpc();
-
-    const [recordPda] = anchor.web3.PublicKey.findProgramAddressSync(
-      [Buffer.from("record"), Buffer.from(name)],
-      program.programId
-    );
 
     const existing = await provider.connection.getAccountInfo(recordPda);
     expect(existing).to.equal(null);
@@ -44,7 +48,7 @@ describe("name-registry", () => {
     const configAccount = await program.account.config.fetch(configPda);
     const adminPubkey = configAccount.admin;
 
-    const accountsObj = {
+    const accounts = {
       record: recordPda,
       config: configPda,
       admin: adminPubkey,
@@ -53,7 +57,7 @@ describe("name-registry", () => {
 
     await program.methods
       .registerName(name, metadata)
-      .accounts(accountsObj)
+      .accounts(accounts)
       .signers([user])
       .rpc();
 
@@ -64,12 +68,7 @@ describe("name-registry", () => {
   });
 
   it("Update metadata", async () => {
-    const [recordPda] = anchor.web3.PublicKey.findProgramAddressSync(
-      [Buffer.from("record"), Buffer.from(name)],
-      program.programId
-    );
-
-    let accountsForUpdate = {
+    const accounts = {
       record: recordPda,
       user: user.publicKey,
     };
@@ -78,11 +77,31 @@ describe("name-registry", () => {
 
     await program.methods
       .updateMetadata(name, metadata)
-      .accounts(accountsForUpdate)
+      .accounts(accounts)
       .signers([user])
       .rpc();
 
     const recordAccount = await program.account.nameRecord.fetch(recordPda);
     expect(recordAccount.metadata).to.deep.equal(metadata);
+  });
+
+  it("Transfer name", async () => {
+    const newUser = anchor.web3.Keypair.generate();
+    const accounts = {
+      record: recordPda,
+      user: user.publicKey,
+      newUser: newUser.publicKey,
+    };
+
+    await program.methods
+      .transferName(name)
+      .accounts(accounts)
+      .signers([user])
+      .rpc();
+
+    const recordAccount = await program.account.nameRecord.fetch(recordPda);
+    expect(recordAccount.owner.toBase58()).to.equal(
+      newUser.publicKey.toBase58()
+    );
   });
 });

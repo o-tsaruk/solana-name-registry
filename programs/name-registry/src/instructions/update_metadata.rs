@@ -1,7 +1,11 @@
 use crate::state::{Metadata, NameRecord};
 use anchor_lang::prelude::*;
 
-pub fn update_metadata(ctx: Context<UpdateMetadata>, _name: String, metadata: Option<Metadata>) -> Result<()> {
+pub fn update_metadata(
+    ctx: Context<UpdateMetadata>,
+    _name: String,
+    metadata: Option<Metadata>,
+) -> Result<()> {
     let record = &mut ctx.accounts.record;
     record.metadata = metadata;
     Ok(())
